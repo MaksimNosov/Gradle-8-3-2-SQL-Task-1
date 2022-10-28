@@ -40,6 +40,10 @@ public class DataHelper {
         return new AuthInfo("vasya", "qwerty123");
     }
 
+    public static AuthInfo getAuthInfoValidLoginInvalidPassword() {
+        return new AuthInfo("vasya", faker.internet().password());
+    }
+
     private static String generateRandomLogin() {
         return faker.name().username();
     }
