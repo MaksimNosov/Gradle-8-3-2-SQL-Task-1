@@ -8,6 +8,7 @@ import ru.netology.data.SQLHelper;
 import ru.netology.pages.LoginPage;
 
 import static com.codeborne.selenide.Selenide.*;
+import static ru.netology.data.SQLHelper.cleanAuthCodesInDatabase;
 import static ru.netology.data.SQLHelper.cleanDatabase;
 
 public class LoginTest {
@@ -20,11 +21,10 @@ public class LoginTest {
     @SneakyThrows
     @Test
     void shouldSuccessfulLogin() {
-        Thread.sleep(300000);
+        cleanAuthCodesInDatabase();
         var loginPage = open("http://localhost:9999/", LoginPage.class);
         var authInfo = DataHelper.getValidAuthInfo();
         var verificationPage = loginPage.validLogin(authInfo);
-
         verificationPage.verifyVerificationPageVisibility();
         var verificationCode = SQLHelper.getVerificationCode();
         verificationPage.validVerify(verificationCode);
@@ -61,6 +61,7 @@ public class LoginTest {
 
     @Test
     void shouldErrorNotificationWhenMore3EntryValidUser() {
+        cleanAuthCodesInDatabase();
         var loginPage = open("http://localhost:9999/", LoginPage.class);
         var authInfo = DataHelper.getValidAuthInfo();
         var verificationPage = loginPage.validLogin(authInfo);
@@ -88,7 +89,6 @@ public class LoginTest {
         verificationPage4.verifyVerificationPageVisibility();
         var verificationCode4 = SQLHelper.getVerificationCode();
         verificationPage.validVerifyMore3Times(verificationCode4);
-
         verificationPage.errorNotificationWhenMore3EntryValidUser();
     }
 }
